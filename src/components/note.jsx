@@ -1,11 +1,12 @@
-function Note() {
+/* eslint-disable react/prop-types */
+function Note(props) {
     return (
         <div className="note">
-            <h1>This is a note title</h1>
-            <p>This is note content</p>
+            <h1>{props.title}</h1>
+            <p>{props.content}</p>
         </div>
     );
-  }
-  
-  export default Note;
-  
+}
+
+
+export default Note;

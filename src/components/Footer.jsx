@@ -3,7 +3,7 @@ function Footer() {
     const currYear= new Date().getFullYear();
   return (
     <footer>
-      <p>copyright@{currYear}</p>
+      <p>Copyright ⓒ {currYear}</p>
     </footer>
   );
 }
