@@ -1,49 +1,63 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import { Fab } from "@mui/material";
+import { Zoom } from "@mui/material";
 
 function CreateArea(props) {
-    const [buttonVal,buttonFunc] = useState({
-        title:"",
-        content:"",
-
+    const [note, setNote] = useState({
+      title: "",
+      content: ""
     });
-
-    function handleChange(event){
-
-        const {name,value} = event.target;
-        buttonFunc((prevNote)=>{
-            if(name==="title"){
-                return{
-                    title:value,
-                    content: prevNote.content,
-                };
-
-            }else if(name==="content"){
-                return{
-                    title:prevNote.title,
-                    content: value,
-                }
-            }
-        })
+    const [isExpanded,isExpandedFunc] = useState(false);
+  
+    function handleChange(event) {
+      const { name, value } = event.target;
+  
+      setNote(prevNote => {
+        return {
+          ...prevNote,
+          [name]: value
+        };
+      });
+    }
+  
+    function submitNote(event) {
+      props.onAdd(note);
+      setNote({
+        title: "",
+        content: ""
+      });
+      event.preventDefault();
     }
 
-    function handleClick(event){
-        event.preventDefault();
-        props.onAdd(buttonVal);
-        buttonFunc({
-            title: "",
-            content: "",
-        })
+    function expandArea(){
+      isExpandedFunc(true);
     }
-  return (
-    <div>
-      <form>
-        <input onChange={handleChange} name="title" placeholder="Title" value={buttonVal.title}/>
-        <textarea onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={buttonVal.content} />
-        <button onClick={handleClick}>Add</button>
-      </form>
-    </div>
-  );
-}
-
-export default CreateArea;
+    return (
+      <div>
+        <form className="create-note">
+          {isExpanded &&  <input
+            name="title"
+            onChange={handleChange}
+            value={note.title}
+            placeholder="Title"
+          />}
+          
+          <textarea
+            name="content"
+            onClick={expandArea}
+            onChange={handleChange}
+            value={note.content}
+            placeholder="Take a note..."
+            rows={isExpanded ? 3 : 1}
+          />
+          <Zoom in={isExpanded}><Fab onClick={submitNote}><AddIcon/></Fab></Zoom>
+          
+        </form>
+      </div>
+    );
+  }
+  
+  export default CreateArea;
+  
